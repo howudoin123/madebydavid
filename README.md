@@ -6,7 +6,7 @@ Personal portfolio site for David Johansson — iOS, web, and AI engineer based 
 
 ## What's inside
 
-A single-file static site (`animated-v2.html`) showcasing:
+A single-file static site (`index.html`) showcasing:
 
 - **RecipeBud** — flagship iOS app, live on the App Store
 - **7-Stage Recipe Scraper** — Python/FastAPI backend with Playwright, FFmpeg, GPT-4 Vision
@@ -26,7 +26,7 @@ A single-file static site (`animated-v2.html`) showcasing:
 python3 -m http.server 3333
 ```
 
-Then open [http://localhost:3333/animated-v2.html](http://localhost:3333/animated-v2.html)
+Then open [http://localhost:3333/](http://localhost:3333/)
 
 ## Deploy
 
