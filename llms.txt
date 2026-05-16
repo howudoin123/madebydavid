@@ -1,0 +1,74 @@
+# David Johansson
+
+> Personal portfolio of David Johansson — iOS, web and AI engineer based in Stockholm, Sweden. Builder of RecipeBud (live iOS app on the App Store), a 7-stage Python recipe-extraction backend, and production websites for real clients. Currently open to work.
+
+## About
+
+David is a Stockholm-based software engineer who ships production iOS, web, and AI systems end-to-end. He works across the full stack: from SwiftUI iOS apps to Python FastAPI backends to Next.js client websites. Known for shipping rather than prototyping.
+
+- Email: djohansson1515@gmail.com
+- GitHub: https://github.com/howudoin123
+- LinkedIn: https://www.linkedin.com/in/david-johansson-1b361a333/
+- Location: Stockholm, Sweden
+- Status: Open to work (remote and on-site)
+
+## Projects
+
+### RecipeBud — Flagship iOS App
+Live on the App Store: https://apps.apple.com/app/id6744579287
+
+A SwiftUI recipe-management app with 81K+ lines of Swift across 303 files, 143 SwiftUI views, and 51+ service classes. Bilingual (Swedish/English) with on-device language detection.
+
+Key features:
+- **Universal Recipe Importer** — paste any URL (websites, YouTube, Instagram, TikTok) and the 7-stage backend extracts a structured recipe
+- **Hanna — AI Voice Cooking** — voice assistant that walks you through recipes step-by-step, powered by OpenAI Realtime API over WebSockets
+- **Smart Shopping Lists** — ingredient consolidation across multiple recipes with grocery store integration (Lidl)
+- **Meal Planner** — weekly meal planning with calendar view
+- **Cook Mode** — hands-free cooking with haptic step navigation and screen-wake lock
+- **Nutrition Diary** — calorie/macro tracking with daily streaks
+
+Stack: SwiftUI, Swift 5.9+, iOS 17+, MVVM, @MainActor, Swift actors, async/await, Supabase (PostgreSQL + Auth + Edge Functions), OpenAI Realtime API, on-device NLLanguageRecognizer.
+
+### 7-Stage Recipe Scraper — Backend API
+The Python FastAPI service powering RecipeBud's recipe import feature.
+
+Pipeline stages:
+1. JSON-LD structured data extraction
+2. Meta tags / Open Graph / schema.org
+3. Direct HTML scraping
+4. Browser render with Playwright (for JS-heavy sites)
+5. Vision AI with GPT-4V (for image-based recipes)
+6. Text AI with GPT-4 (for unstructured text)
+7. Fallback to manual extraction prompt
+
+Operational features:
+- 99% success rate across 5,000+ production extractions
+- Proxy rotation with domain-specific affinity scoring
+- Circuit breakers and worker watchdog for cascading failure prevention
+- Failed-URL cache with TTL-based expiry to prevent re-scraping known failures
+- FFmpeg + Whisper pipeline for extracting recipes from Instagram/TikTok/YouTube videos
+- Async job queue with background workers
+- Docker-based deployment on Hetzner via Dokploy
+
+Stack: Python 3.10+, FastAPI, Playwright, FFmpeg, OpenAI (GPT-4 + GPT-4V + Whisper), Supabase, async/await, asyncio.TaskGroup.
+
+### Client Websites — Production Web Work
+
+**LD Luxury (ldluxurydecor.se)** — Luxury wedding decor agency in Stockholm. Stack: Next.js, Framer Motion, Vercel.
+
+**Komplett Bygg (komplettbyggvasteras.se)** — Construction company in Västerås, Sweden. Stack: Next.js, SEO, AEO (Answer Engine Optimization), Local Search optimization.
+
+## Tech Stack Summary
+
+- **iOS**: Swift, SwiftUI, MVVM, Swift actors, async/await
+- **Backend**: Python, FastAPI, async/await, Playwright, FFmpeg
+- **Web**: Next.js, React, Vercel, Framer Motion
+- **Data**: Supabase (PostgreSQL, Auth, Edge Functions, Realtime)
+- **AI**: OpenAI (GPT-4, GPT-4V, Whisper, Realtime API), on-device NLP
+- **Infra**: Docker, Hetzner, Vercel, Dokploy, GitHub Actions CI/CD
+
+## Hiring
+
+David is currently **open to work** — both remote and on-site engagements. Particularly interested in roles building consumer iOS apps, AI-powered products, or full-stack web platforms.
+
+Contact: djohansson1515@gmail.com
