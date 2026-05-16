@@ -705,88 +705,177 @@
     z-index:10001;opacity:0;transition:opacity .4s,transform .4s cubic-bezier(.22,1,.36,1)}
   .kontoast.on{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
 
-  /* ══════════ MOBILE ══════════ */
+  /* ══════════ MOBILE / TABLET ══════════ */
   @media(max-width:768px){
-    body,html{cursor:auto}
+    /* ── FOUNDATION ── */
+    /* Disable mandatory scroll snap — feels janky on touch + lets content flow naturally */
+    html{scroll-snap-type:none;overflow-y:auto;height:auto}
+    body{cursor:auto;height:auto;overflow-x:hidden}
+    .scene{scroll-snap-align:none;scroll-snap-stop:normal;
+      height:auto;min-height:100vh}
     #cur,#glow{display:none}
+    /* Disable clip-path reveals on mobile to avoid layout flicker during scroll */
+    .pstg,.rbside,.tp:nth-child(1),.tp:nth-child(2),
+    .cp-ld,.cp-kb,.cinn,.cbtns{clip-path:none !important}
+
+    /* Side dot nav: 44×44 invisible tap area via padding */
+    .dots{right:4px;gap:8px}
+    .dot{width:7px;height:7px;border-radius:4px;position:relative}
+    .dot::before{content:'';position:absolute;inset:-18px;
+      /* invisible 44x44+ tap area centered on the dot */}
+    .dot.on{height:22px}
+
+    /* Section direction overrides */
     #s1,#s2,#s3{flex-direction:column !important}
 
-    /* Hero */
-    nav.hn{padding:16px 20px}
+    /* ────────── HERO ────────── */
+    nav.hn{padding:14px 18px}
+    /* 44px tap target on the DJ logo */
+    .logo{font-size:16px;padding:12px 14px;margin:-12px -14px;min-height:44px;min-width:44px;
+      display:inline-flex;align-items:center;justify-content:center}
+    /* Hide desktop nav links — replaced with dot nav on right */
     .nl{display:none}
-    .hc{padding:0 20px}
-    .hsub{display:none}
+    .navr{gap:12px}
+    .avl{font-size:10px;padding:5px 11px;min-height:24px}
+
+    .hc{padding:0 18px;flex:1;justify-content:center}
+    .hlbl{font-size:9px;letter-spacing:3px;margin-bottom:10px}
+    .nl2{font-size:clamp(46px,12vw,72px);letter-spacing:-.05em;line-height:.94}
+    /* SHOW the positioning line on mobile (was display:none) */
+    .hsub{display:block;font-size:13px;line-height:1.6;max-width:none;
+      margin-top:14px;color:#7a7a7a}
+
+    .chips{gap:6px;margin-top:14px}
+    .chip{font-size:9px;padding:3px 9px}
+
+    .nowln{margin-top:12px;font-size:9px;flex-wrap:wrap;gap:6px}
+    #nowact{min-width:auto}
+
+    /* Stats bar — 2x2 grid */
     .hbar{flex-wrap:wrap}
-    .hs{flex:1 1 50%;border-right:none;border-bottom:1px solid var(--b);padding:12px 18px}
+    .hs{flex:1 1 50%;border-right:none;border-bottom:1px solid var(--b);
+      padding:14px 16px;min-height:48px}
     .hs:nth-child(odd){border-right:1px solid var(--b)}
     .hs:nth-last-child(-n+2){border-bottom:none}
-    .hn2{font-size:22px}
-    .scue{display:none}
+    .hn2{font-size:24px;letter-spacing:-1.2px}
+    .hl{font-size:8px;letter-spacing:1.2px;margin-top:2px}
 
-    /* RecipeBud */
-    .pstg{height:46vh;flex:none}
+    .scue{display:none}
+    .term{display:none}
+
+    /* ────────── RECIPEBUD ────────── */
+    .pstg{height:auto;min-height:480px;padding:28px 0 8px;flex:none}
     .ring{width:280px;height:280px}
-    .phones{width:240px;height:400px}
-    .ph.c{width:170px;height:360px;border-radius:32px}
+    .phones{width:240px;height:400px;perspective:none}
+    .ph.c{width:170px;height:360px;border-radius:32px;
+      animation:none;transform:translate(-50%,-50%);opacity:1}
     .psstack,.pidynamic{border-radius:30px}
     .ph.ll,.ph.rr{width:130px;height:280px;border-radius:30px}
     .pidynamic{width:64px;height:19px;top:7px;border-radius:10px}
-    .pdots{bottom:-24px}
-    /* Hide floating fragments + radar pulses on mobile (too cluttered) */
-    .frag,.pulsering,.crosshair{display:none}
-    .rbside{flex:none;height:58vh;padding:22px 22px;border-left:none;border-top:1px solid var(--b)}
-    .rbt{font-size:38px;margin-bottom:8px}
-    .rbtag{font-size:12px;margin-bottom:14px}
-    .rbl{margin-bottom:14px}
-    .feat{padding:10px 14px}
+    .pdots{bottom:-22px;gap:8px}
+    /* Carousel dots — bigger tap area via invisible padding */
+    .pdt{width:6px;height:6px;position:relative}
+    .pdt::before{content:'';position:absolute;inset:-14px}
+    .pdt.on{width:22px}
+
+    /* Hide all fragments, radar pulses, crosshair, particle stream on mobile */
+    .frag,.pulsering,.crosshair,.dstream{display:none}
+
+    .rbside{flex:none;height:auto;padding:28px 20px 36px;
+      border-left:none;border-top:1px solid var(--b)}
+    .rbi{font-size:9px;letter-spacing:3px;margin-bottom:8px}
+    .rbt{font-size:44px;margin-bottom:10px;letter-spacing:-2px;line-height:1}
+    .rbtag{font-size:13px;line-height:1.55;max-width:none;margin-bottom:16px}
+    /* 44px tap target on App Store link */
+    .rbl{font-size:11px;margin-bottom:14px;padding:10px 0;min-height:32px}
+    .feats{border-radius:10px}
+    .feat{padding:13px 14px;min-height:44px}
     .fn{font-size:12px}
+    .badge{font-size:8px;padding:3px 7px}
 
-    /* Tech */
-    .tp{flex:none;height:50vh;padding:26px 22px;gap:16px}
+    /* ────────── TECH ────────── */
+    .tp{flex:none;height:auto;min-height:auto;padding:36px 20px 32px;gap:16px}
     .tp:first-child{border-right:none;border-bottom:1px solid var(--b)}
-    .tti{font-size:26px}
-    .pbox{width:32px;height:32px}
-    .pnode::after{right:-6px;font-size:7px}
-    .wb{font-size:9px;height:36px}
-    .wa{font-size:12px}
+    .tey{font-size:9px;letter-spacing:2.5px}
+    .tti{font-size:32px;letter-spacing:-1.3px;line-height:1}
+    .tdesc{font-size:12px;line-height:1.6;max-width:none}
+    .torb{width:200px;height:200px}
 
-    /* Clients */
-    .cs-cards{flex-direction:column}
-    .cp{flex:none;height:50vh}
-    .cp-ld{border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
-    .cshdr{padding:12px 18px}
+    /* 7-stage scraper — stages already vertical, but make them readable */
+    .stg{padding:11px 14px;gap:10px;min-height:42px;
+      display:flex;align-items:center;flex-wrap:wrap}
+    .stn{font-size:9px;flex-shrink:0}
+    .stname{font-size:13px;flex:1;min-width:0}
+    .stbg{font-size:8.5px;flex-shrink:0;letter-spacing:.4px}
+
+    /* Hanna chat / voice section */
+    .hchat{gap:8px}
+    .hbub{max-width:90%;font-size:11px;padding:9px 12px;line-height:1.45}
+    .huser{font-size:11px}
+    .htxt{font-size:11px;line-height:1.5}
+    .hwav{height:22px;gap:2px;margin-top:10px}
+    .hwb{flex:1;max-width:4px}
+    .hstatus{gap:8px;margin-top:10px;font-size:9px;flex-wrap:wrap}
+    .hslbl{font-size:9px;flex:1;min-width:0}
+    .hsoff{font-size:8px;padding:2px 7px}
+
+    /* ────────── CLIENTS ────────── */
+    .cshdr{padding:14px 18px;flex-wrap:wrap;gap:8px;min-height:auto}
+    .csno{font-size:9px}
+    .cstitle{font-size:12px}
     .cssub{display:none}
-    .cp-mac-area{padding:16px 16px 6px}
-    .mac-wrap{width:90%}
-    .cp-info{padding:14px 16px 16px}
-    .cpname{font-size:24px !important;letter-spacing:-1px !important}
-    .cpwm{font-size:80px}
-    .cp-bottom{gap:8px}
-    .cplink{font-size:10px;padding:6px 12px}
 
-    /* Contact */
-    .cbig{font-size:40px}
-    .cbtns{flex-direction:column;align-items:center}
-    .cbtn{font-size:12px;padding:13px 22px;width:100%;max-width:280px;justify-content:center}
+    .cs-cards{flex-direction:column}
+    .cp{flex:none;height:auto;min-height:auto;padding-bottom:20px}
+    .cp-ld{border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
+    .cp-mac-area{flex:none;min-height:240px;padding:24px 24px 10px;
+      align-items:center;justify-content:center}
+    .canva-mockup{max-width:90%;max-height:220px}
+    .cp-info{padding:16px 20px 18px;height:auto;min-height:auto;flex:none}
+    .cpname{font-size:30px !important;letter-spacing:-1px !important;line-height:1}
+    .cpnum{font-size:10px}
+    .cpwm{font-size:90px;bottom:-2%;right:-1%}
+    .cp-bottom{gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center}
+    .cptch{font-size:9px;padding:3px 8px}
+    /* 44px tap target on Visit site */
+    .cplink{font-size:12px;padding:12px 18px;min-height:44px;
+      display:inline-flex;align-items:center;justify-content:center}
 
-    /* Hero chips */
-    .chips{gap:6px}
-    .chip{font-size:9px;padding:3px 9px}
+    /* ────────── CONTACT ────────── */
+    .cring{width:280px;height:280px}
+    .cring:nth-child(3){width:380px;height:380px}
+    .cring:nth-child(4){width:480px;height:480px}
+    .corb{width:140px;height:140px}
+    .cinn{padding:36px 22px;height:auto;min-height:auto}
+    .cpre{font-size:9px;letter-spacing:3px;margin-bottom:14px}
+    .cbig{font-size:52px;letter-spacing:-2px;line-height:.95}
+    .csub{font-size:10px;letter-spacing:1.5px;margin-bottom:28px}
+    .cbtns{flex-direction:column;align-items:stretch;gap:10px;width:100%;max-width:340px}
+    .cbtn{font-size:13px;padding:14px 20px;width:100%;justify-content:center;
+      min-height:44px}
+    .csocials{font-size:9px;flex-wrap:wrap;justify-content:center;
+      margin-top:24px;gap:6px}
 
-    /* Hide terminal preview on mobile */
-    .term{display:none}
-    .nowln{margin-top:14px;font-size:9px;flex-wrap:wrap}
-    #nowact{min-width:auto}
+    /* Misc overlays */
     .eegg-card{width:92vw}
+    .kontoast{top:24px;font-size:10px;padding:10px 18px}
   }
+
   /* Hide terminal on smaller laptops to avoid overlap */
   @media(max-width:1180px) and (min-width:769px){
     .term{display:none}
   }
-  @media(max-width:480px){
-    .nl2{font-size:62px}
-    .hn2{font-size:18px}
-    .rbt{font-size:30px}
+
+  /* ── TINY PHONES (iPhone SE 1st-gen / older) ── */
+  @media(max-width:400px){
+    .nl2{font-size:11vw;letter-spacing:-.045em}
+    .hn2{font-size:22px}
+    .hbar{padding-bottom:env(safe-area-inset-bottom,0)}
+    .rbt{font-size:40px}
+    .tti{font-size:28px}
+    .cbig{font-size:46px}
+    .feat{padding:11px 12px}
+    .stg{padding:10px 12px}
   }
 </style>
 </head>

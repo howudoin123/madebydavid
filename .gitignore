@@ -6,3 +6,4 @@ node_modules/
 
 # Source archive — only the 5 used screenshots (rb-1 through rb-5) are tracked
 screenshots RB/
+_mobtest.html
