@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#030303">
+<title>404 — Page not found · madebydavid</title>
+<meta name="description" content="That page doesn't exist on madebydavid.se. Head back home for David Johansson's portfolio.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--p:#845AFF;--c:#06b6d4;--g:#22c55e;--bg:#030303}
+  html,body{height:100%}
+  body{background:var(--bg);color:#e2e8f0;font-family:'Inter',system-ui,sans-serif;
+    min-height:100vh;display:flex;flex-direction:column;overflow:hidden;position:relative}
+
+  /* Background mesh + grid (same as hero) */
+  .mesh{position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(ellipse 75% 55% at 12% 22%,rgba(132,90,255,.13) 0%,transparent 55%),
+               radial-gradient(ellipse 50% 45% at 88% 78%,rgba(6,182,212,.08) 0%,transparent 55%),
+               radial-gradient(ellipse 35% 35% at 55% 35%,rgba(132,90,255,.05) 0%,transparent 55%);
+    animation:msh 20s ease-in-out infinite alternate}
+  @keyframes msh{to{filter:hue-rotate(18deg) brightness(1.04)}}
+  .grid{position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(rgba(132,90,255,.022) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(132,90,255,.022) 1px,transparent 1px);
+    background-size:80px 80px;
+    mask-image:radial-gradient(ellipse 65% 65% at 50% 50%,black 0%,transparent 100%)}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* Top nav */
+  nav{display:flex;align-items:center;justify-content:space-between;
+    padding:22px 36px;position:relative;z-index:10}
+  .logo{font-size:14px;font-weight:700;color:#fff;letter-spacing:-.3px;text-decoration:none;
+    transition:letter-spacing .35s cubic-bezier(.22,1,.36,1),text-shadow .35s}
+  .logo:hover{letter-spacing:2px;text-shadow:0 0 12px rgba(132,90,255,.55)}
+  .nback{font-size:12px;color:#666;letter-spacing:.4px;text-decoration:none;transition:color .2s}
+  .nback:hover{color:#fff}
+
+  /* Main content */
+  main{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    padding:0 24px;position:relative;z-index:10;text-align:center}
+  .eyebrow{font-size:10px;font-weight:700;letter-spacing:5px;text-transform:uppercase;
+    color:var(--p);margin-bottom:18px;
+    opacity:0;animation:fi .6s .15s cubic-bezier(.22,1,.36,1) forwards}
+  .big{font-size:clamp(120px,22vw,260px);font-weight:900;letter-spacing:-.07em;line-height:.86;
+    background:linear-gradient(130deg,var(--p) 0%,var(--c) 50%,var(--p) 100%);background-size:200%;
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    opacity:0;transform:translateY(20px);
+    animation:fi .8s .25s cubic-bezier(.22,1,.36,1) forwards,gs 5s 1.5s ease-in-out infinite alternate}
+  @keyframes fi{to{opacity:1;transform:none}}
+  @keyframes gs{from{background-position:0% 50%}to{background-position:100% 50%}}
+  h1{font-size:clamp(22px,3.5vw,32px);font-weight:800;color:#fff;letter-spacing:-1px;
+    margin-top:8px;opacity:0;animation:fi .6s .45s cubic-bezier(.22,1,.36,1) forwards}
+  p.sub{font-size:14px;color:#7a7a7a;margin-top:14px;max-width:420px;line-height:1.6;
+    opacity:0;animation:fi .6s .6s cubic-bezier(.22,1,.36,1) forwards}
+  .actions{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;justify-content:center;
+    opacity:0;animation:fi .6s .75s cubic-bezier(.22,1,.36,1) forwards}
+  .btn{display:inline-flex;align-items:center;gap:8px;
+    padding:14px 24px;border-radius:30px;font-size:13px;font-weight:600;letter-spacing:.3px;
+    text-decoration:none;min-height:44px;transition:all .25s;cursor:pointer}
+  .btn.primary{background:var(--p);color:#fff;box-shadow:0 6px 24px rgba(132,90,255,.3)}
+  .btn.primary:hover{filter:brightness(1.1);box-shadow:0 8px 32px rgba(132,90,255,.5);transform:translateY(-1px)}
+  .btn.ghost{background:rgba(255,255,255,.04);color:#ccc;border:1px solid rgba(255,255,255,.08)}
+  .btn.ghost:hover{background:rgba(255,255,255,.07);color:#fff;border-color:rgba(255,255,255,.15)}
+
+  footer{padding:24px 36px;font-size:10px;color:#3a3a3a;letter-spacing:1.5px;
+    text-transform:uppercase;text-align:center;position:relative;z-index:10;font-weight:600;
+    opacity:0;animation:fi .5s 1s ease forwards}
+
+  @media(max-width:768px){
+    nav{padding:16px 18px}
+    main{padding:0 18px}
+    .actions{flex-direction:column;align-items:stretch;width:100%;max-width:300px}
+    .btn{width:100%;justify-content:center}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none !important;transition-duration:.01s !important}
+  }
+</style>
+</head>
+<body>
+  <div class="mesh"></div>
+  <div class="grid"></div>
+  <div class="grain"></div>
+
+  <nav>
+    <a href="/" class="logo" aria-label="Back to David Johansson home">DJ</a>
+    <a href="/" class="nback">← madebydavid.se</a>
+  </nav>
+
+  <main>
+    <div class="eyebrow">Page not found</div>
+    <div class="big">404</div>
+    <h1>Looks like that page took a wrong turn.</h1>
+    <p class="sub">The link might be old, mistyped, or this page never existed. Let's get you back to the work.</p>
+    <div class="actions">
+      <a href="/" class="btn primary">← Take me home</a>
+      <a href="mailto:djohansson1515@gmail.com" class="btn ghost">Email David</a>
+    </div>
+  </main>
+
+  <footer>iOS · Web · AI · Stockholm, Sweden</footer>
+</body>
+</html>

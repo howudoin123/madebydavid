@@ -36,6 +36,9 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-title" content="madebydavid">
 
+<!-- ── Apple Smart App Banner — shows "Install RecipeBud" on iOS Safari ── -->
+<meta name="apple-itunes-app" content="app-id=6744579287, app-argument=https://madebydavid.se/">
+
 <!-- ── JSON-LD structured data (helps Google's knowledge panel + AI engines) ── -->
 <script type="application/ld+json">
 {
@@ -1050,11 +1053,11 @@
       <div class="ph rr"></div>
       <div class="ph c" id="mphone">
         <div class="psstack" id="psstack">
-          <img class="psimg on" src="rb-1-splash.webp" alt="RecipeBud splash screen" data-label="Brand"/>
-          <img class="psimg" src="rb-2-import.webp" alt="RecipeBud universal recipe importer" data-label="Import"/>
-          <img class="psimg" src="rb-3-recipe.webp" alt="RecipeBud recipe detail with cook mode" data-label="Recipe"/>
-          <img class="psimg" src="rb-4-planner.webp" alt="RecipeBud weekly meal planner" data-label="Planner"/>
-          <img class="psimg" src="rb-5-diary.webp" alt="RecipeBud nutrition diary with streaks" data-label="Diary"/>
+          <img class="psimg on" src="rb-1-splash.webp" alt="RecipeBud splash screen" width="600" height="1300" loading="eager" fetchpriority="high"/>
+          <img class="psimg" src="rb-2-import.webp" alt="RecipeBud universal recipe importer" width="600" height="1300" loading="lazy"/>
+          <img class="psimg" src="rb-3-recipe.webp" alt="RecipeBud recipe detail with cook mode" width="600" height="1300" loading="lazy"/>
+          <img class="psimg" src="rb-4-planner.webp" alt="RecipeBud weekly meal planner" width="600" height="1300" loading="lazy"/>
+          <img class="psimg" src="rb-5-diary.webp" alt="RecipeBud nutrition diary with streaks" width="600" height="1300" loading="lazy"/>
         </div>
         <div class="pidynamic"></div>
       </div>
@@ -1206,7 +1209,7 @@
       <div class="cpline"></div>
       <div class="cpwm">LD</div>
       <a class="cp-mac-area" href="https://ldluxurydecor.se" target="_blank">
-        <img class="canva-mockup" src="ld-mockup.webp" alt="LD Luxury website mockup">
+        <img class="canva-mockup" src="ld-mockup.webp" alt="LD Luxury website mockup" width="1010" height="568" loading="lazy">
       </a>
       <div class="cp-info">
         <div class="cplive"><span class="cplivedot"></span><span class="cplivelbl">Live</span></div>
@@ -1230,7 +1233,7 @@
       <div class="cpline"></div>
       <div class="cpwm">KB</div>
       <a class="cp-mac-area" href="https://www.komplettbyggvasteras.se" target="_blank">
-        <img class="canva-mockup" src="kb-mockup.webp" alt="Komplett Bygg website mockup">
+        <img class="canva-mockup" src="kb-mockup.webp" alt="Komplett Bygg website mockup" width="1010" height="568" loading="lazy">
       </a>
       <div class="cp-info">
         <div class="cplive"><span class="cplivedot"></span><span class="cplivelbl">Live</span></div>
@@ -1427,6 +1430,15 @@
 
   // Dot nav
   dots.forEach(d=>d.addEventListener('click',()=>scenes[+d.dataset.s].scrollIntoView({behavior:'smooth'})));
+
+  /* ────── VERCEL ANALYTICS — privacy-friendly visitor tracking ────── */
+  // Auto-served from Vercel edge in production; skip on localhost to avoid console 404
+  if(location.hostname !== 'localhost' && location.hostname !== '127.0.0.1'){
+    const s=document.createElement('script');
+    s.defer=true;
+    s.src='/_vercel/insights/script.js';
+    document.head.appendChild(s);
+  }
 
   // Top-bar nav links
   document.querySelectorAll('.nl[data-nav]').forEach(n=>{
