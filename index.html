@@ -738,12 +738,15 @@
     .pstg,.rbside,.tp:nth-child(1),.tp:nth-child(2),
     .cp-ld,.cp-kb,.cinn,.cbtns{clip-path:none !important}
 
-    /* Side dot nav: 44×44 invisible tap area via padding */
-    .dots{right:4px;gap:8px}
-    .dot{width:7px;height:7px;border-radius:4px;position:relative}
-    .dot::before{content:'';position:absolute;inset:-18px;
-      /* invisible 44x44+ tap area centered on the dot */}
-    .dot.on{height:22px}
+    /* Hide side dot nav on mobile — users scroll naturally with touch;
+       the dots look like a phantom scrollbar following the finger. */
+    .dots{display:none}
+
+    /* Suppress any persistent system scrollbar UI on mobile */
+    html{scrollbar-width:none;-ms-overflow-style:none}
+    html::-webkit-scrollbar{display:none;width:0;height:0}
+    body{scrollbar-width:none}
+    body::-webkit-scrollbar{display:none}
 
     /* Section direction overrides */
     #s1,#s2,#s3{flex-direction:column !important}
