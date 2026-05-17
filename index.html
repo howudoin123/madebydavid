@@ -139,7 +139,20 @@
   @keyframes bdc{0%,100%{transform:translateY(0);opacity:.25}50%{transform:translateY(6px);opacity:.9}}
 
   /* ══════════ RECIPEBUD ══════════ */
-  #s1{background:#030303;flex-direction:row !important}
+  #s1{background:#030303}  /* Was flex-direction:row — now column with .work-body holding the row */
+  .work-hdr{height:52px;display:flex;align-items:center;padding:0 36px;gap:18px;
+    flex-shrink:0;z-index:7;position:relative;border-bottom:1px solid var(--b);
+    background:rgba(3,3,3,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    opacity:0;transform:translateY(-8px);
+    transition:opacity .6s .1s cubic-bezier(.22,1,.36,1),transform .6s .1s cubic-bezier(.22,1,.36,1)}
+  .scene-active .work-hdr{opacity:1;transform:none}
+  .wh-label{font-size:10px;letter-spacing:3.5px;text-transform:uppercase;font-weight:800;
+    color:var(--p);text-shadow:0 0 8px rgba(132,90,255,.3)}
+  .wh-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(132,90,255,.35) 0%,
+    rgba(132,90,255,.1) 40%,transparent 100%)}
+  .wh-meta{font-size:10px;color:#5a5a5a;letter-spacing:1.5px;font-weight:600;
+    text-transform:uppercase}
+  .work-body{flex:1;display:flex;flex-direction:row;min-height:0;min-width:0;position:relative}
   .pstg{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;min-width:0}
   .ring{position:absolute;width:540px;height:540px;border-radius:50%;
     border:1px solid rgba(132,90,255,.09);
@@ -196,8 +209,40 @@
       0 0 40px rgba(132,90,255,.08);
     color:#e8e8ee;z-index:6;min-width:180px;font-family:'Inter',sans-serif;
     opacity:0;transform:translateY(24px) scale(.92);
-    transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+    transition:opacity .8s cubic-bezier(.22,1,.36,1),
+               transform .8s cubic-bezier(.22,1,.36,1),
+               border-color .25s, box-shadow .25s, background .25s;
+    cursor:pointer; user-select:none}
   .scene-active .frag{opacity:1;transform:translateY(0) scale(1)}
+
+  /* Hover (desktop) — lift + brighten halo */
+  @media (hover:hover){
+    .frag:hover{
+      background:rgba(12,12,20,.88);
+      border-color:rgba(132,90,255,.32);
+      box-shadow:
+        0 22px 60px rgba(0,0,0,.75),
+        0 0 0 1px rgba(132,90,255,.18),
+        0 0 60px rgba(132,90,255,.22);
+    }
+    .frag:hover .frag-label{color:rgba(255,255,255,.82)}
+  }
+
+  /* Content swap fade — softer cross-dissolve when carousel changes */
+  .frag-row,.frag-text,.frag-wave,.frag-prog,.frag-stars,.frag-num,.frag-meta{
+    transition:opacity .25s ease-out}
+  .frag.swap-out .frag-row,.frag.swap-out .frag-text,
+  .frag.swap-out .frag-wave,.frag.swap-out .frag-prog,
+  .frag.swap-out .frag-stars,.frag.swap-out .frag-num,
+  .frag.swap-out .frag-meta{opacity:0}
+
+  /* Click pulse */
+  .frag.frag-pulse{animation:fragPulse .7s ease-out}
+  @keyframes fragPulse{
+    0%{transform:scale(1);box-shadow:0 18px 50px rgba(0,0,0,.7),0 0 0 1px rgba(132,90,255,.06),0 0 40px rgba(132,90,255,.08)}
+    35%{transform:scale(1.06);box-shadow:0 22px 60px rgba(0,0,0,.8),0 0 0 2px rgba(132,90,255,.6),0 0 90px rgba(132,90,255,.5)}
+    100%{transform:scale(1);box-shadow:0 18px 50px rgba(0,0,0,.7),0 0 0 1px rgba(132,90,255,.06),0 0 40px rgba(132,90,255,.08)}
+  }
 
   /* Fragment-specific positions + entry stagger + perpetual bob */
   .frag-1{top:6%;left:-4%;transition-delay:1.9s;animation:fragBob 6s 2.7s ease-in-out infinite alternate}
@@ -806,7 +851,12 @@
     body::-webkit-scrollbar{display:none}
 
     /* Section direction overrides */
-    #s1,#s2,#s3{flex-direction:column !important}
+    #s2,#s3{flex-direction:column !important}
+    /* #s1 is already column with .work-hdr; just stack the body */
+    .work-body{flex-direction:column}
+    .work-hdr{height:44px;padding:0 18px;gap:12px}
+    .wh-label{font-size:9px;letter-spacing:2.5px}
+    .wh-meta{font-size:9px;letter-spacing:1px}
 
     /* ────────── HERO ────────── */
     nav.hn{padding:14px 18px}
@@ -858,8 +908,25 @@
     .pdt::before{content:'';position:absolute;inset:-14px}
     .pdt.on{width:22px}
 
-    /* Hide all fragments, radar pulses, crosshair, particle stream on mobile */
-    .frag,.pulsering,.crosshair,.dstream{display:none}
+    /* Mobile: keep pulses/crosshair/stream hidden (visual noise on small screens) */
+    .pulsering,.crosshair,.dstream{display:none}
+    /* But re-enable fragments — only TL + BR, smaller, edges of .phones */
+    .frag-2,.frag-4{display:none}  /* hide TR + BL on mobile */
+    .frag{min-width:120px;padding:7px 10px;border-radius:10px;
+      box-shadow:0 12px 30px rgba(0,0,0,.65),0 0 0 1px rgba(132,90,255,.05),0 0 24px rgba(132,90,255,.08)}
+    .frag-label{font-size:8px;letter-spacing:1.2px}
+    .frag-text{font-size:10px;line-height:1.4}
+    .frag-meta{font-size:8px;letter-spacing:.2px}
+    .frag-num{font-size:15px}
+    .frag-num .frag-currency{font-size:9px}
+    .frag-wave{height:11px;gap:1.5px;margin-top:5px}
+    .frag-wave span{max-width:2px}
+    .frag-prog{gap:3px;margin-top:5px}
+    .frag-pd{width:7px;height:2.5px}
+    .frag-stars svg{width:9px;height:9px}
+    /* Position the 2 visible fragments at the corners of .phones */
+    .frag-1{top:-2%;left:-6%;animation-duration:5s}
+    .frag-3{bottom:8%;right:-6%;animation-duration:5.5s}
 
     .rbside{flex:none;height:auto;padding:28px 20px 36px;
       border-left:none;border-top:1px solid var(--b)}
@@ -1042,6 +1109,13 @@
 
 <!-- ── RECIPEBUD ── -->
 <section class="scene" id="s1"><div class="scan"></div>
+  <!-- Section anchor: introduces the work showcase -->
+  <div class="work-hdr">
+    <span class="wh-label">Selected Work</span>
+    <div class="wh-line"></div>
+    <span class="wh-meta">04 Projects · 2024–26</span>
+  </div>
+  <div class="work-body">
   <div class="pstg">
     <div class="ring"></div>
     <div class="pulsering"></div>
@@ -1069,60 +1143,11 @@
         <div class="pdt"></div>
       </div>
 
-      <!-- ── Floating UI fragments — features popping out around the phone ── -->
-
-      <!-- Top-left: Hanna voice AI -->
-      <div class="frag frag-1">
-        <div class="frag-row">
-          <span class="frag-dot purple"></span>
-          <span class="frag-label">Hanna · Voice AI</span>
-        </div>
-        <div class="frag-text">"Add the pasta to boiling water…"</div>
-        <div class="frag-wave">
-          <span></span><span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span>
-        </div>
-      </div>
-
-      <!-- Top-right: Live extraction in progress -->
-      <div class="frag frag-2">
-        <div class="frag-row">
-          <span class="frag-dot cyan"></span>
-          <span class="frag-label">Extracting · 04 / 07</span>
-        </div>
-        <div class="frag-prog">
-          <span class="frag-pd fill"></span><span class="frag-pd fill"></span>
-          <span class="frag-pd fill"></span><span class="frag-pd fill"></span>
-          <span class="frag-pd"></span><span class="frag-pd"></span><span class="frag-pd"></span>
-        </div>
-        <div class="frag-meta">Browser Render · Playwright</div>
-      </div>
-
-      <!-- Bottom-right: Smart cart total -->
-      <div class="frag frag-3">
-        <div class="frag-row">
-          <span class="frag-dot green"></span>
-          <span class="frag-label">Smart Cart · Lidl</span>
-        </div>
-        <div class="frag-num">145<span class="frag-currency">kr</span></div>
-        <div class="frag-meta">12 items · 4 portions</div>
-      </div>
-
-      <!-- Bottom-left: App Store rating + made in -->
-      <div class="frag frag-4">
-        <div class="frag-row">
-          <span class="frag-dot orange"></span>
-          <span class="frag-label">Live · App Store</span>
-        </div>
-        <div class="frag-stars">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <div class="frag-meta">Made in Stockholm · 2026</div>
-      </div>
+      <!-- ── Floating UI fragment slots — content swaps with active screen ── -->
+      <div class="frag frag-1" data-slot="tl" aria-label="Feature highlight"></div>
+      <div class="frag frag-2" data-slot="tr" aria-label="Status indicator"></div>
+      <div class="frag frag-3" data-slot="br" aria-label="Metric"></div>
+      <div class="frag frag-4" data-slot="bl" aria-label="Identity tag"></div>
 
     </div>
   </div>
@@ -1140,6 +1165,7 @@
       <div class="feat"><span class="fn">Bilingual · SV / EN</span><span class="badge bw">On-device</span></div>
     </div>
   </div>
+  </div><!-- /.work-body -->
 </section>
 
 <!-- ── TECH ── -->
@@ -1408,24 +1434,135 @@
   // Launch a particle every ~600ms, with a tiny burst now and then
   setInterval(()=>{ if(Math.random()<.85) spawnDataParticle(); },600);
 
-  /* ────── RECIPEBUD SCREEN CAROUSEL ────── */
+  /* ────── RECIPEBUD SCREEN CAROUSEL + CONTEXTUAL FRAGMENTS ────── */
   const psImgs=document.querySelectorAll('.psimg');
   const psDots=document.querySelectorAll('#pdots .pdt');
   let psIdx=0,psTimer=null;
+
+  /* Fragment content matrix — 5 screens × 4 slots (tl, tr, br, bl) */
+  const FRAG_DATA = [
+    // Screen 0: Splash (brand)
+    {
+      tl:{c:'purple',label:'Hanna · Voice AI',text:'Your AI cooking assistant',wave:true,jump:1},
+      tr:{c:'orange',label:'Live · App Store',stars:5,meta:'v1.2.1 · Stockholm',jump:0},
+      br:{c:'purple',label:'81K Swift LOC',num:'81',unit:'K',meta:'303 files · 51 services',jump:null},
+      bl:{c:'green',label:'Made in Stockholm',text:'Solo-built · 2024–26',jump:null}
+    },
+    // Screen 1: Save a Recipe (universal importer)
+    {
+      tl:{c:'purple',label:'Hanna · Voice AI',text:'"Found a recipe?"',wave:true,jump:1},
+      tr:{c:'cyan',label:'Extracting · 04 / 07',prog:4,meta:'Browser Render · Playwright',jump:1},
+      br:{c:'green',label:'5,127 recipes',num:'5,127',meta:'Extracted to date',jump:1},
+      bl:{c:'purple',label:'Universal Importer',text:'Sites · YouTube · IG · TikTok',jump:1}
+    },
+    // Screen 2: Recipe detail (cook mode)
+    {
+      tl:{c:'purple',label:'Hanna · Voice AI',text:'Reading recipe step 3…',wave:true,jump:2},
+      tr:{c:'cyan',label:'Cook Mode · Step 3',meta:'Haptics · Hands-free',cook:true,jump:2},
+      br:{c:'orange',label:'30 min · 4 servings',num:'620',unit:'kcal',meta:'41g protein · 77g carbs',jump:2},
+      bl:{c:'green',label:'Bilingual · SV / EN',text:'On-device detection',jump:2}
+    },
+    // Screen 3: Planner (meal planning)
+    {
+      tl:{c:'orange',label:'Weekly Plan',text:'March · Week 14',jump:3},
+      tr:{c:'cyan',label:'Today · Friday',meta:'2 meals planned',cook:false,jump:3},
+      br:{c:'green',label:'Smart Cart · Lidl',num:'145',unit:'kr',meta:'12 items · 4 portions',jump:3},
+      bl:{c:'purple',label:'Meal Planner',text:'7 days · 21 meals',jump:3}
+    },
+    // Screen 4: Diary (nutrition)
+    {
+      tl:{c:'orange',label:'Day Streak',num:'6',unit:'days',meta:'Keep it going',jump:4},
+      tr:{c:'purple',label:'Today · 3 Apr',meta:'Remaining for today',cook:false,jump:4},
+      br:{c:'orange',label:'1,630 kcal left',num:'1,630',unit:'kcal',meta:'Goal: 2,000 · 830 eaten',jump:4},
+      bl:{c:'green',label:'On-device tracking',text:'Privacy-first · No cloud',jump:4}
+    }
+  ];
+
+  /* Build a fragment's inner HTML from a content blob */
+  function buildFragHTML(d){
+    if(!d) return '';
+    let body='';
+    if(d.wave){
+      body='<div class="frag-wave">'+'<span></span>'.repeat(9)+'</div>';
+    } else if(d.prog!=null){
+      const dots = Array(7).fill().map((_,i)=>`<span class="frag-pd${i<d.prog?' fill':''}"></span>`).join('');
+      body=`<div class="frag-prog">${dots}</div>`;
+    } else if(d.stars){
+      const star='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+      body=`<div class="frag-stars">${star.repeat(d.stars)}</div>`;
+    } else if(d.num){
+      const unit=d.unit?`<span class="frag-currency">${d.unit}</span>`:'';
+      body=`<div class="frag-num">${d.num}${unit}</div>`;
+    }
+    const main=d.text?`<div class="frag-text">${d.text}</div>`:'';
+    const meta=d.meta?`<div class="frag-meta">${d.meta}</div>`:'';
+    return `
+      <div class="frag-row">
+        <span class="frag-dot ${d.c}"></span>
+        <span class="frag-label">${d.label}</span>
+      </div>
+      ${main}
+      ${body}
+      ${meta}`;
+  }
+
+  const fragSlots = document.querySelectorAll('.frag[data-slot]');
+  /* Cache which slot holds which jump-screen for click handlers */
+  const fragJumpMap = new Map();
+
+  function paintFragments(screenIdx, instant){
+    const set = FRAG_DATA[screenIdx];
+    if(!set) return;
+    fragSlots.forEach(slot=>{
+      const which = slot.dataset.slot;
+      const data = set[which];
+      if(instant || !slot.innerHTML.trim()){
+        // First paint — no fade, just set content
+        slot.innerHTML = buildFragHTML(data);
+        fragJumpMap.set(slot, data?.jump);
+      } else {
+        // Crossfade: fade out current, swap content, fade in
+        slot.classList.add('swap-out');
+        setTimeout(()=>{
+          slot.innerHTML = buildFragHTML(data);
+          fragJumpMap.set(slot, data?.jump);
+          slot.classList.remove('swap-out');
+        }, 220);
+      }
+    });
+  }
+
   function showScreen(i){
     psImgs[psIdx].classList.remove('on');
     psDots[psIdx]?.classList.remove('on');
     psIdx=(i+psImgs.length)%psImgs.length;
     psImgs[psIdx].classList.add('on');
     psDots[psIdx]?.classList.add('on');
+    paintFragments(psIdx);
   }
+
   function startCarousel(){
     if(psTimer) clearInterval(psTimer);
-    psTimer=setInterval(()=>showScreen(psIdx+1),4000);
+    psTimer=setInterval(()=>showScreen(psIdx+1),4500);
   }
+
   if(psImgs.length>1){
+    paintFragments(0, true); // initial paint — no fade
     startCarousel();
     psDots.forEach((d,i)=>d.addEventListener('click',()=>{showScreen(i);startCarousel()}));
+
+    /* Fragment click → jump carousel to the screen that fragment links to */
+    fragSlots.forEach(slot=>{
+      slot.addEventListener('click',()=>{
+        const target = fragJumpMap.get(slot);
+        if(target!=null && target!==psIdx){
+          showScreen(target);
+          startCarousel();
+        }
+        slot.classList.add('frag-pulse');
+        setTimeout(()=>slot.classList.remove('frag-pulse'),700);
+      });
+    });
   }
 
   // Dot nav
