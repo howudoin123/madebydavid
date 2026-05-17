@@ -478,7 +478,31 @@
 
   /* Site preview card — clickable anchor */
   .cp-mac-area{flex:1 1 0;display:flex;align-items:center;justify-content:center;
-    padding:26px 26px 10px;min-height:0;overflow:hidden;text-decoration:none;cursor:pointer}
+    padding:26px 26px 10px;min-height:0;overflow:hidden;text-decoration:none;cursor:pointer;
+    position:relative}
+
+  /* "View live" hover cue — fades in on card hover, sits over the laptop mockup */
+  .cp-hover-cue{position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(.9);
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 18px;border-radius:30px;
+    background:rgba(8,8,12,.85);backdrop-filter:blur(20px);
+    color:#fff;font-size:12px;font-weight:600;letter-spacing:.3px;
+    border:1px solid rgba(255,255,255,.12);
+    opacity:0;pointer-events:none;z-index:5;
+    transition:opacity .35s,transform .45s cubic-bezier(.22,1,.36,1);
+    box-shadow:0 14px 40px rgba(0,0,0,.6)}
+  .cp-hover-cue svg{width:14px;height:14px;stroke-linecap:round;stroke-linejoin:round}
+  .cp-ld .cp-hover-cue{box-shadow:0 14px 40px rgba(0,0,0,.6),0 0 40px rgba(212,175,55,.25)}
+  .cp-kb .cp-hover-cue{box-shadow:0 14px 40px rgba(0,0,0,.6),0 0 40px rgba(6,182,212,.25)}
+  @media (hover:hover){
+    .cp:hover .cp-hover-cue,.cp:focus-visible .cp-hover-cue{
+      opacity:1;transform:translate(-50%,-50%) scale(1)}
+  }
+
+  /* Whole-card keyboard focus ring (since cp is now role=link tabindex=0) */
+  .cp{outline:none}
+  .cp:focus-visible{box-shadow:inset 0 0 0 2px var(--p)}
 
   .mac-wrap{width:88%;position:relative;
     opacity:0;transform:translateY(28px) rotateX(8deg);transform-origin:bottom center;
@@ -617,7 +641,7 @@
   .scene-active .csub{opacity:1}
   .cbtns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;opacity:0;transform:translateY(12px);transition:opacity .5s .78s,transform .5s .78s}
   .scene-active .cbtns{opacity:1;transform:none}
-  .cbtn{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--p);padding:13px 26px;border-radius:12px;border:1px solid rgba(132,90,255,.28);background:rgba(132,90,255,.08);cursor:pointer;transition:background .3s,box-shadow .3s,border-color .3s;text-decoration:none}
+  .cbtn{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--p);padding:13px 26px;border-radius:12px;border:1px solid rgba(132,90,255,.28);background:rgba(132,90,255,.08);cursor:pointer;transition:background .3s,box-shadow .3s,border-color .3s,transform .25s cubic-bezier(.22,1,.36,1);text-decoration:none;will-change:transform}
   .cbtn:hover{background:rgba(132,90,255,.18);box-shadow:0 0 36px rgba(132,90,255,.28);border-color:rgba(132,90,255,.45)}
   .cbtn.ghost{color:#484848;border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
   .cbtn.ghost:hover{color:#aaa;background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);box-shadow:none}
@@ -711,7 +735,31 @@
 
   /* ══════════ SCRAPER STAGES ══════════ */
   .stages{display:flex;flex-direction:column;gap:5px}
-  .stg{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;border:1px solid var(--b);background:#070707;opacity:0;transform:translateX(-16px);transition:opacity .4s,transform .4s cubic-bezier(.22,1,.36,1),border-color .45s,background .45s}
+  .stg{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;border:1px solid var(--b);background:#070707;
+    opacity:0;transform:translateX(-16px);cursor:pointer;
+    transition:opacity .4s,transform .4s cubic-bezier(.22,1,.36,1),
+               border-color .25s,background .25s,box-shadow .25s}
+  @media (hover:hover){
+    .stg:hover{border-color:rgba(6,182,212,.45);background:rgba(6,182,212,.05);
+      box-shadow:0 6px 20px rgba(6,182,212,.12)}
+    .stg:hover .stname{color:#fff}
+    .stg:hover .stn{color:var(--c)}
+    .stg:hover .stbg{border-color:rgba(6,182,212,.35);color:rgba(6,182,212,.85)}
+  }
+
+  /* Pipeline description panel — updates when a stage is hovered */
+  .stage-desc{margin-top:14px;padding:14px 16px;border-radius:10px;
+    border:1px solid var(--b);background:rgba(6,182,212,.025);
+    display:flex;flex-direction:column;gap:6px;min-height:78px;
+    opacity:0;transform:translateY(8px);
+    transition:opacity .5s .8s,transform .5s .8s,
+               border-color .3s,background .3s}
+  .scene-active .stage-desc{opacity:1;transform:none}
+  .stage-desc.hot{border-color:rgba(6,182,212,.3);background:rgba(6,182,212,.06)}
+  .sd-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--c)}
+  .sd-text{font-size:12px;line-height:1.55;color:#888;
+    transition:opacity .2s}
+  .stage-desc.swapping .sd-text{opacity:0}
   .stg.lit{opacity:1;transform:none;border-color:rgba(6,182,212,.3);background:rgba(6,182,212,.04)}
   .stdot{width:5px;height:5px;border-radius:50%;background:transparent;box-shadow:none;transition:background .4s,box-shadow .4s;flex-shrink:0}
   .stg.lit .stdot{background:var(--c);box-shadow:0 0 9px var(--c)}
@@ -1177,13 +1225,25 @@
     <div class="tti">7-Stage<br>Scraper</div>
     <div class="tdesc">Paste any URL — website, YouTube, Instagram, TikTok. Each stage tries to extract a structured recipe. If one fails, the next kicks in. Proxy rotation, circuit breakers, and a failed-URL cache keep it alive at 99% success across 5K+ extractions.</div>
     <div class="stages" id="stages">
-      <div class="stg"><div class="stdot"></div><span class="stn">01</span><span class="stname">JSON-LD</span><span class="stbg">Structured Data</span></div>
-      <div class="stg"><div class="stdot"></div><span class="stn">02</span><span class="stname">Meta Tags</span><span class="stbg">OG / schema.org</span></div>
-      <div class="stg"><div class="stdot"></div><span class="stn">03</span><span class="stname">Direct Scrape</span><span class="stbg">HTML Parser</span></div>
-      <div class="stg"><div class="stdot"></div><span class="stn">04</span><span class="stname">Browser Render</span><span class="stbg">Playwright</span></div>
-      <div class="stg"><div class="stdot"></div><span class="stn">05</span><span class="stname">Vision AI</span><span class="stbg">GPT-4V</span></div>
-      <div class="stg"><div class="stdot"></div><span class="stn">06</span><span class="stname">Text AI</span><span class="stbg">GPT-4</span></div>
-      <div class="stg"><div class="stdot"></div><span class="stn">07</span><span class="stname">Fallback</span><span class="stbg">Manual Extract</span></div>
+      <div class="stg" data-desc="Reads schema.org Recipe JSON-LD blocks from <head>. Fastest path — most sites embed this for Google.">
+        <div class="stdot"></div><span class="stn">01</span><span class="stname">JSON-LD</span><span class="stbg">Structured Data</span></div>
+      <div class="stg" data-desc="Falls back to OpenGraph + microdata tags when JSON-LD is missing. Catches older recipe sites.">
+        <div class="stdot"></div><span class="stn">02</span><span class="stname">Meta Tags</span><span class="stbg">OG / schema.org</span></div>
+      <div class="stg" data-desc="Custom domain-specific selectors. ~80 named site handlers (NYT Cooking, Bon Appétit, Allrecipes...).">
+        <div class="stdot"></div><span class="stn">03</span><span class="stname">Direct Scrape</span><span class="stbg">HTML Parser</span></div>
+      <div class="stg" data-desc="Spins up headless Chrome via Playwright for JS-heavy SPAs. Proxy rotation + anti-bot evasion.">
+        <div class="stdot"></div><span class="stn">04</span><span class="stname">Browser Render</span><span class="stbg">Playwright</span></div>
+      <div class="stg" data-desc="GPT-4V reads recipe screenshots, Instagram posts, and TikTok video frames. Multi-frame extraction.">
+        <div class="stdot"></div><span class="stn">05</span><span class="stname">Vision AI</span><span class="stbg">GPT-4V</span></div>
+      <div class="stg" data-desc="GPT-4 parses unstructured page text + Whisper transcripts from YouTube/IG/TikTok audio.">
+        <div class="stdot"></div><span class="stn">06</span><span class="stname">Text AI</span><span class="stbg">GPT-4</span></div>
+      <div class="stg" data-desc="Final safety net — prompts user to paste recipe text manually if all 6 stages fail. <1% of requests.">
+        <div class="stdot"></div><span class="stn">07</span><span class="stname">Fallback</span><span class="stbg">Manual Extract</span></div>
+    </div>
+    <!-- Stage description panel — updates on hover -->
+    <div class="stage-desc" id="stageDesc" aria-live="polite">
+      <span class="sd-label">Hover a stage</span>
+      <span class="sd-text">Each stage handles a different content shape — the pipeline auto-routes to whichever extracts cleanly.</span>
     </div>
   </div>
   <div class="tp">
@@ -1230,13 +1290,17 @@
   </div>
   <div class="cs-cards">
     <!-- LD Luxury -->
-    <div class="cp cp-ld">
+    <div class="cp cp-ld" data-href="https://luxurydecor.se" tabindex="0" role="link" aria-label="Visit LD Luxury website">
       <div class="cpblob"></div>
       <div class="cpgrid"></div>
       <div class="cpline"></div>
       <div class="cpwm">LD</div>
-      <a class="cp-mac-area" href="https://luxurydecor.se" target="_blank">
+      <a class="cp-mac-area" href="https://luxurydecor.se" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
         <img class="canva-mockup" src="ld-mockup.webp" alt="LD Luxury website mockup" width="1010" height="568" loading="lazy">
+        <div class="cp-hover-cue">
+          <span>View live</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </div>
       </a>
       <div class="cp-info">
         <div class="cplive"><span class="cplivedot"></span><span class="cplivelbl">Live</span></div>
@@ -1254,13 +1318,17 @@
     </div>
 
     <!-- Komplett Bygg -->
-    <div class="cp cp-kb">
+    <div class="cp cp-kb" data-href="https://www.komplettbyggvasteras.se" tabindex="0" role="link" aria-label="Visit Komplett Bygg website">
       <div class="cpblob"></div>
       <div class="cpgrid"></div>
       <div class="cpline"></div>
       <div class="cpwm">KB</div>
-      <a class="cp-mac-area" href="https://www.komplettbyggvasteras.se" target="_blank">
+      <a class="cp-mac-area" href="https://www.komplettbyggvasteras.se" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
         <img class="canva-mockup" src="kb-mockup.webp" alt="Komplett Bygg website mockup" width="1010" height="568" loading="lazy">
+        <div class="cp-hover-cue">
+          <span>View live</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </div>
       </a>
       <div class="cp-info">
         <div class="cplive"><span class="cplivedot"></span><span class="cplivelbl">Live</span></div>
@@ -1357,6 +1425,41 @@
           document.querySelectorAll('#stages .stg').forEach((n,i)=>{
             setTimeout(()=>n.classList.add('lit'),150+i*160);
           });
+          // Wire stage hover/tap → description panel swap
+          const descPanel = document.getElementById('stageDesc');
+          if(descPanel){
+            const sdLabel = descPanel.querySelector('.sd-label');
+            const sdText = descPanel.querySelector('.sd-text');
+            let descTimer;
+            const updateDesc = (stg)=>{
+              const stageNum = stg.querySelector('.stn')?.textContent || '';
+              const stageName = stg.querySelector('.stname')?.textContent || '';
+              const desc = stg.dataset.desc || '';
+              descPanel.classList.add('swapping','hot');
+              clearTimeout(descTimer);
+              descTimer = setTimeout(()=>{
+                sdLabel.textContent = `Stage ${stageNum} · ${stageName}`;
+                sdText.innerHTML = desc;
+                descPanel.classList.remove('swapping');
+              }, 180);
+            };
+            const resetDesc = ()=>{
+              descPanel.classList.add('swapping');
+              descPanel.classList.remove('hot');
+              clearTimeout(descTimer);
+              descTimer = setTimeout(()=>{
+                sdLabel.textContent = 'Hover a stage';
+                sdText.textContent = 'Each stage handles a different content shape — the pipeline auto-routes to whichever extracts cleanly.';
+                descPanel.classList.remove('swapping');
+              }, 180);
+            };
+            document.querySelectorAll('#stages .stg').forEach(stg=>{
+              stg.addEventListener('mouseenter', ()=>updateDesc(stg));
+              stg.addEventListener('focus', ()=>updateDesc(stg));
+              stg.addEventListener('click', ()=>updateDesc(stg));
+            });
+            document.getElementById('stages').addEventListener('mouseleave', resetDesc);
+          }
         }
       }
     });
@@ -1636,6 +1739,57 @@
   document.querySelectorAll('.nl[data-nav]').forEach(n=>{
     n.addEventListener('click',()=>scenes[+n.dataset.nav].scrollIntoView({behavior:'smooth'}));
   });
+
+  /* ────── CLIENT CARDS — whole card clickable + keyboard accessible ────── */
+  document.querySelectorAll('.cp[data-href]').forEach(card=>{
+    const url = card.dataset.href;
+    const open = ()=>window.open(url, '_blank', 'noopener');
+    card.addEventListener('click', e=>{
+      // Don't double-fire if the user clicked the inner anchor (which already opens)
+      if(e.target.closest('a')) return;
+      open();
+    });
+    card.addEventListener('keydown', e=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        open();
+      }
+    });
+  });
+
+  /* ────── MAGNETIC CONTACT BUTTONS — subtle cursor pull (desktop only) ────── */
+  if(window.matchMedia('(hover:hover)').matches){
+    document.querySelectorAll('.cbtn').forEach(btn=>{
+      const PULL = 0.25; // strength: 0 = none, 1 = full follow
+      const REACH = 80;  // px from button edge where the pull starts kicking in
+      let rafId;
+      const reset = ()=>{
+        btn.style.transform = '';
+      };
+      const update = (e)=>{
+        const r = btn.getBoundingClientRect();
+        const cx = r.left + r.width/2;
+        const cy = r.top + r.height/2;
+        const dx = e.clientX - cx;
+        const dy = e.clientY - cy;
+        const dist = Math.hypot(dx, dy);
+        const radius = Math.max(r.width, r.height)/2 + REACH;
+        if(dist > radius){ reset(); return; }
+        // Falloff: closer = stronger pull
+        const strength = (1 - dist/radius) * PULL;
+        const tx = dx * strength;
+        const ty = dy * strength;
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(()=>{
+          btn.style.transform = `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px)`;
+        });
+      };
+      // Listen on parent (contact card) so the field extends beyond button bounds
+      const parent = btn.closest('.cbtns') || btn.parentElement;
+      parent?.addEventListener('mousemove', update);
+      parent?.addEventListener('mouseleave', reset);
+    });
+  }
 
   // DJ logo — single click replays intro · 3 rapid clicks unlocks easter egg
   const djLogo=document.getElementById('djlogo');
