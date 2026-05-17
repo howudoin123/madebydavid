@@ -228,15 +228,15 @@
     .frag:hover .frag-label{color:rgba(255,255,255,.82)}
   }
 
-  /* Double-buffered content swap — two stacked .frag-inner divs cross-fade.
-     Opacity-only transitions = GPU-accelerated, no layout = zero jank. */
-  .frag-inner{position:absolute;inset:11px 14px;
+  /* Double-buffered content swap via CSS grid stacking.
+     Both .frag-inner children share one grid cell — they overlap perfectly,
+     and the parent .frag grows to fit the TALLEST content. No overflow. */
+  .frag{display:grid;grid-template-areas:"stack"}
+  .frag-inner{grid-area:stack;
     display:flex;flex-direction:column;
     opacity:0;transition:opacity .3s ease;pointer-events:none;
     will-change:opacity}
-  .frag-inner.on{opacity:1}
-  /* Stable height + reset padding (inner has it via inset) */
-  .frag{min-height:74px;padding:0 !important}
+  .frag-inner.on{opacity:1;pointer-events:auto}
 
   /* Click pulse */
   .frag.frag-pulse{animation:fragPulse .7s ease-out}
@@ -912,23 +912,22 @@
 
     /* Mobile: keep pulses/crosshair/stream hidden (visual noise on small screens) */
     .pulsering,.crosshair,.dstream{display:none}
-    /* But re-enable fragments — only TL + BR, smaller, edges of .phones */
+    /* Re-enable fragments — only TL + BR, smaller, trimmed content */
     .frag-2,.frag-4{display:none}  /* hide TR + BL on mobile */
-    .frag{min-width:120px;padding:7px 10px;border-radius:10px;
-      box-shadow:0 12px 30px rgba(0,0,0,.65),0 0 0 1px rgba(132,90,255,.05),0 0 24px rgba(132,90,255,.08)}
-    .frag-label{font-size:8px;letter-spacing:1.2px}
-    .frag-text{font-size:10px;line-height:1.4}
-    .frag-meta{font-size:8px;letter-spacing:.2px}
+    .frag{min-width:118px;max-width:160px;padding:7px 10px;border-radius:9px;
+      box-shadow:0 12px 30px rgba(0,0,0,.7),0 0 0 1px rgba(132,90,255,.06),0 0 22px rgba(132,90,255,.1)}
+    .frag-label{font-size:7.5px;letter-spacing:1.2px}
+    .frag-text{font-size:10px;line-height:1.4;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .frag-meta{font-size:8px;letter-spacing:.2px;
+      display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
     .frag-num{font-size:15px}
     .frag-num .frag-currency{font-size:9px}
-    .frag-wave{height:11px;gap:1.5px;margin-top:5px}
-    .frag-wave span{max-width:2px}
-    .frag-prog{gap:3px;margin-top:5px}
-    .frag-pd{width:7px;height:2.5px}
-    .frag-stars svg{width:9px;height:9px}
-    /* Position the 2 visible fragments at the corners of .phones */
-    .frag-1{top:-2%;left:-6%;animation-duration:5s}
-    .frag-3{bottom:8%;right:-6%;animation-duration:5.5s}
+    /* Hide visually-noisy decorative elements on mobile — keep info clean */
+    .frag-wave,.frag-prog,.frag-stars{display:none}
+    /* Position the 2 visible fragments at corners (slight bezel overlap) */
+    .frag-1{top:1%;left:-7%;animation-duration:5s}
+    .frag-3{bottom:11%;right:-7%;animation-duration:5.5s}
 
     .rbside{flex:none;height:auto;padding:28px 20px 36px;
       border-left:none;border-top:1px solid var(--b)}
