@@ -228,13 +228,15 @@
     .frag:hover .frag-label{color:rgba(255,255,255,.82)}
   }
 
-  /* Content swap fade — softer cross-dissolve when carousel changes */
-  .frag-row,.frag-text,.frag-wave,.frag-prog,.frag-stars,.frag-num,.frag-meta{
-    transition:opacity .25s ease-out}
-  .frag.swap-out .frag-row,.frag.swap-out .frag-text,
-  .frag.swap-out .frag-wave,.frag.swap-out .frag-prog,
-  .frag.swap-out .frag-stars,.frag.swap-out .frag-num,
-  .frag.swap-out .frag-meta{opacity:0}
+  /* Double-buffered content swap — two stacked .frag-inner divs cross-fade.
+     Opacity-only transitions = GPU-accelerated, no layout = zero jank. */
+  .frag-inner{position:absolute;inset:11px 14px;
+    display:flex;flex-direction:column;
+    opacity:0;transition:opacity .3s ease;pointer-events:none;
+    will-change:opacity}
+  .frag-inner.on{opacity:1}
+  /* Stable height + reset padding (inner has it via inset) */
+  .frag{min-height:74px;padding:0 !important}
 
   /* Click pulse */
   .frag.frag-pulse{animation:fragPulse .7s ease-out}
@@ -1234,7 +1236,7 @@
       <div class="cpgrid"></div>
       <div class="cpline"></div>
       <div class="cpwm">LD</div>
-      <a class="cp-mac-area" href="https://ldluxurydecor.se" target="_blank">
+      <a class="cp-mac-area" href="https://luxurydecor.se" target="_blank">
         <img class="canva-mockup" src="ld-mockup.webp" alt="LD Luxury website mockup" width="1010" height="568" loading="lazy">
       </a>
       <div class="cp-info">
@@ -1247,7 +1249,7 @@
             <span class="cptch">Framer Motion</span>
             <span class="cptch">Vercel</span>
           </div>
-          <a class="cplink" href="https://ldluxurydecor.se" target="_blank">Visit site ↗</a>
+          <a class="cplink" href="https://luxurydecor.se" target="_blank">Visit site ↗</a>
         </div>
       </div>
     </div>
@@ -1510,25 +1512,51 @@
   /* Cache which slot holds which jump-screen for click handlers */
   const fragJumpMap = new Map();
 
+  /* Double-buffering: each slot gets two .frag-inner children that we toggle
+     between. No DOM rebuild on swap → buttery 60fps crossfade. */
+  const fragBuffers = new Map(); // slot → { a, b, active: 'a'|'b' }
+
+  function initFragmentBuffers(){
+    fragSlots.forEach(slot=>{
+      slot.innerHTML = '';
+      const a = document.createElement('div');
+      a.className = 'frag-inner on';
+      const b = document.createElement('div');
+      b.className = 'frag-inner';
+      slot.appendChild(a);
+      slot.appendChild(b);
+      fragBuffers.set(slot, { a, b, active: 'a' });
+    });
+  }
+
   function paintFragments(screenIdx, instant){
     const set = FRAG_DATA[screenIdx];
     if(!set) return;
     fragSlots.forEach(slot=>{
       const which = slot.dataset.slot;
       const data = set[which];
-      if(instant || !slot.innerHTML.trim()){
-        // First paint — no fade, just set content
-        slot.innerHTML = buildFragHTML(data);
-        fragJumpMap.set(slot, data?.jump);
+      const buf = fragBuffers.get(slot);
+      if(!buf) return;
+      const currentEl = buf[buf.active];
+      const nextKey = buf.active === 'a' ? 'b' : 'a';
+      const nextEl = buf[nextKey];
+
+      // Write to the inactive buffer first (DOM update happens off-screen, opacity 0)
+      nextEl.innerHTML = buildFragHTML(data);
+      fragJumpMap.set(slot, data?.jump);
+
+      if(instant){
+        // No transition: swap classes immediately
+        currentEl.classList.remove('on');
+        nextEl.classList.add('on');
       } else {
-        // Crossfade: fade out current, swap content, fade in
-        slot.classList.add('swap-out');
-        setTimeout(()=>{
-          slot.innerHTML = buildFragHTML(data);
-          fragJumpMap.set(slot, data?.jump);
-          slot.classList.remove('swap-out');
-        }, 220);
+        // Use requestAnimationFrame to ensure DOM write commits before opacity transition
+        requestAnimationFrame(()=>{
+          nextEl.classList.add('on');
+          currentEl.classList.remove('on');
+        });
       }
+      buf.active = nextKey;
     });
   }
 
@@ -1547,9 +1575,37 @@
   }
 
   if(psImgs.length>1){
-    paintFragments(0, true); // initial paint — no fade
+    initFragmentBuffers();    // create the two .frag-inner divs per slot
+    paintFragments(0, true);  // initial paint — no fade
     startCarousel();
     psDots.forEach((d,i)=>d.addEventListener('click',()=>{showScreen(i);startCarousel()}));
+
+    /* ─ SWIPE GESTURE on the phone (mobile + trackpad/touch) ─ */
+    const phoneStack = document.getElementById('psstack');
+    if(phoneStack && 'ontouchstart' in window){
+      let sx=0, sy=0, st=0, tracking=false;
+      phoneStack.addEventListener('touchstart', e=>{
+        sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+        st = Date.now();
+        tracking = true;
+      }, {passive:true});
+      phoneStack.addEventListener('touchend', e=>{
+        if(!tracking) return;
+        tracking = false;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx;
+        const dy = t.clientY - sy;
+        const dt = Date.now() - st;
+        // Horizontal swipe: >40px AND clearly more horizontal than vertical AND fast (<800ms)
+        if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)*1.4 && dt < 800){
+          if(dx < 0) showScreen(psIdx + 1); // swipe left → next
+          else       showScreen(psIdx - 1); // swipe right → previous
+          startCarousel(); // reset auto-rotation timer
+        }
+      }, {passive:true});
+      phoneStack.addEventListener('touchcancel', ()=>{tracking=false}, {passive:true});
+    }
 
     /* Fragment click → jump carousel to the screen that fragment links to */
     fragSlots.forEach(slot=>{

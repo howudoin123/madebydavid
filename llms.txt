@@ -54,7 +54,7 @@ Stack: Python 3.10+, FastAPI, Playwright, FFmpeg, OpenAI (GPT-4 + GPT-4V + Whisp
 
 ### Client Websites — Production Web Work
 
-**LD Luxury (ldluxurydecor.se)** — Luxury wedding decor agency in Stockholm. Stack: Next.js, Framer Motion, Vercel.
+**LD Luxury (luxurydecor.se)** — Luxury wedding decor agency in Stockholm. Stack: Next.js, Framer Motion, Vercel.
 
 **Komplett Bygg (komplettbyggvasteras.se)** — Construction company in Västerås, Sweden. Stack: Next.js, SEO, AEO (Answer Engine Optimization), Local Search optimization.
 
