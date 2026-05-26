@@ -9,7 +9,7 @@
 <title>David Johansson — iOS, Web & AI Engineer · Stockholm</title>
 <meta name="description" content="David Johansson — iOS, web and AI engineer based in Stockholm. Built RecipeBud (live on the App Store), a 7-stage Python recipe-extraction backend, and production websites for real clients. Open to work.">
 <meta name="author" content="David Johansson">
-<meta name="keywords" content="David Johansson, iOS developer, Swift, SwiftUI, web developer, AI engineer, Next.js, Python, Stockholm, freelance, RecipeBud, portfolio">
+<meta name="keywords" content="David Johansson, iOS developer, Swift, SwiftUI, web developer, AI engineer, Next.js, Python, Docker, Hetzner, Stockholm, freelance, RecipeBud, portfolio">
 <link rel="canonical" href="https://madebydavid.se/">
 
 <!-- ── Open Graph (LinkedIn, Slack, iMessage, Facebook) ── -->
@@ -56,7 +56,7 @@
     "https://www.linkedin.com/in/david-johansson-1b361a333/",
     "https://apps.apple.com/app/id6744579287"
   ],
-  "knowsAbout": ["Swift","SwiftUI","Python","Next.js","Supabase","OpenAI","Whisper","FFmpeg","iOS development","Web development","AI engineering"]
+  "knowsAbout": ["Swift","SwiftUI","Python","Next.js","Supabase","OpenAI","Whisper","FFmpeg","Docker","Hetzner","iOS development","Web development","AI engineering"]
 }
 </script>
 
@@ -792,6 +792,12 @@
   .hsdot{width:5px;height:5px;border-radius:50%;background:var(--o);box-shadow:0 0 8px var(--o);animation:pulse 1.8s infinite;flex-shrink:0}
   .hslbl{font-size:9px;color:#444;letter-spacing:.3px;flex:1}
   .hsoff{font-size:8px;color:#2a2a2a;padding:2px 8px;border-radius:4px;border:1px solid rgba(255,255,255,.06)}
+  /* Infra deployment strip (backend section) */
+  .infra-strip{display:flex;align-items:center;gap:8px;margin-top:10px;opacity:0;transition:opacity .4s .9s}
+  .scene-active .infra-strip{opacity:1}
+  .is-dot{width:5px;height:5px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);animation:pulse 1.8s infinite;flex-shrink:0}
+  .is-lbl{font-size:9px;color:#444;letter-spacing:.3px;flex:1}
+  .is-badge{font-size:8px;color:#3a3a3a;padding:2px 9px;border-radius:4px;border:1px solid rgba(255,255,255,.06);white-space:nowrap}
 
   /* ══════════ HERO — LIVE NOW LINE ══════════ */
   .nowln{display:flex;align-items:center;gap:9px;margin-top:18px;font-size:10px;letter-spacing:.4px;
@@ -1127,6 +1133,8 @@
       <span class="chip">OpenAI</span>
       <span class="chip">Whisper</span>
       <span class="chip">FFmpeg</span>
+      <span class="chip">Docker</span>
+      <span class="chip">Hetzner</span>
     </div>
     <div class="nowln">
       <span class="nowdot"></span>
@@ -1245,6 +1253,12 @@
       <span class="sd-label">Hover a stage</span>
       <span class="sd-text">Each stage handles a different content shape — the pipeline auto-routes to whichever extracts cleanly.</span>
     </div>
+    <!-- Deployment infra strip -->
+    <div class="infra-strip">
+      <div class="is-dot"></div>
+      <span class="is-lbl">Self-hosted · Python 3.10+ · FastAPI</span>
+      <span class="is-badge">Docker · Hetzner · Dokploy</span>
+    </div>
   </div>
   <div class="tp">
     <div class="torb oran"></div>
@@ -1337,6 +1351,7 @@
         <div class="cp-bottom">
           <div class="cptechs">
             <span class="cptch">Next.js</span>
+            <span class="cptch">Vercel</span>
             <span class="cptch">SEO</span>
             <span class="cptch">AEO</span>
             <span class="cptch">Local Search</span>
